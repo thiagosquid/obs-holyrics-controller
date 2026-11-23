@@ -11,6 +11,7 @@ import { StageViewService } from '../stageViewService';
 import { getLocalIp } from '../network';
 import { buildCompatibility } from '../compatibility';
 import { logger } from '../logger';
+import { APP_VERSION } from '../version';
 
 interface RouterDeps {
   onSessionRevoked: (sessionToken: string) => void;
@@ -243,6 +244,7 @@ export function createApiRouter(
       status: 'ok',
       lanIp: getLocalIp(),
       port: settings.server.port,
+      version: APP_VERSION,
     });
   });
 
@@ -250,7 +252,7 @@ export function createApiRouter(
     const state = stateManager.getState();
     res.json({
       status: 'ok',
-      server: { online: true },
+      server: { online: true, version: APP_VERSION },
       holyrics: {
         connected: state.connected,
         error: state.connectionError,

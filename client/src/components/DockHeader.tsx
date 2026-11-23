@@ -9,12 +9,14 @@ interface DockHeaderProps {
   accent: string;
   connected: boolean;
   holyricsConnected: boolean;
+  /** Versão do OHC (ex.: "1.0.2"). Exibida de forma discreta. */
+  version?: string;
 }
 
 /**
  * Cabeçalho unificado dos docks do OBS: selo com ícone colorido, título,
- * subtítulo opcional e o status de conexão — para identificar cada dock de
- * relance e manter a aparência consistente entre eles.
+ * subtítulo opcional, versão e o status de conexão — para identificar cada
+ * dock de relance e manter a aparência consistente entre eles.
  */
 export function DockHeader({
   icon,
@@ -23,6 +25,7 @@ export function DockHeader({
   accent,
   connected,
   holyricsConnected,
+  version,
 }: DockHeaderProps) {
   return (
     <header className="flex items-center gap-3">
@@ -37,6 +40,7 @@ export function DockHeader({
           <p className="text-[11px] text-slate-400 leading-tight mt-0.5 truncate">{subtitle}</p>
         )}
       </div>
+      {version && <span className="text-[10px] text-slate-500 flex-shrink-0">v{version}</span>}
       <ConnectionBadge connected={connected} holyricsConnected={holyricsConnected} />
     </header>
   );

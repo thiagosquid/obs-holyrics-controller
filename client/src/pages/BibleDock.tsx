@@ -168,6 +168,7 @@ export default function BibleDock() {
         accent="bg-amber-600"
         connected={connected}
         holyricsConnected={state?.connected ?? false}
+        version={__APP_VERSION__}
       />
 
       <div className="relative bg-black rounded-lg overflow-hidden border border-slate-700 aspect-video max-h-44 flex items-center justify-center">

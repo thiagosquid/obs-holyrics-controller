@@ -90,7 +90,7 @@ export interface CompatibilityFeature {
 
 export interface ServerStatus {
   status: string;
-  server: { online: boolean };
+  server: { online: boolean; version?: string };
   holyrics: { connected: boolean; error?: string; version?: string };
   presentation: {
     type: string;

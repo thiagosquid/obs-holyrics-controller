@@ -5,6 +5,14 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.3] - 2026-11-23
+
+### Adicionado
+
+- Exibição da versão do OHC na interface: cabeçalho do painel administrativo
+  ("OHC v1.0.3") e subtítulo dos docks (ex.: "Letras · v1.0.3").
+- Endpoint `/status` e `/server-info` agora retornam `version`.
+
 ## [1.0.2] - 2026-11-23
 
 ### Corrigido

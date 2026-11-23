@@ -430,7 +430,14 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 p-3 sm:p-4 space-y-4 max-w-5xl mx-auto">
       <header className="flex items-center justify-between gap-2">
-        <h1 className="text-xl font-bold">Administração</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold">Administração</h1>
+          {status?.server?.version && (
+            <span className="text-xs font-medium text-slate-400 bg-slate-800 px-2 py-1 rounded">
+              OHC v{status.server.version}
+            </span>
+          )}
+        </div>
         <ConnectionBadge connected={connected} holyricsConnected={state?.connected ?? false} />
       </header>
 

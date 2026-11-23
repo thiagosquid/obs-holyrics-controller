@@ -54,6 +54,7 @@ export default function LyricsDock() {
         accent="bg-emerald-600"
         connected={connected}
         holyricsConnected={state?.connected ?? false}
+        version={__APP_VERSION__}
       />
 
       <div className="bg-slate-800 rounded">

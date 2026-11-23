@@ -85,6 +85,7 @@ export default function SlidesDock() {
         accent="bg-sky-600"
         connected={connected}
         holyricsConnected={state?.connected ?? false}
+        version={__APP_VERSION__}
       />
 
       <div className="bg-slate-800 rounded">

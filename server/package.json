@@ -1,6 +1,6 @@
 {
   "name": "ohc-server",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OHC — OBS Holyrics Controller (backend)",
   "main": "dist/index.js",
   "bin": "dist/launcher.js",
