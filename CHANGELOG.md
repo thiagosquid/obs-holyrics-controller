@@ -14,6 +14,9 @@ e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Alterado
 
+- Senha padrão do painel administrativo alterada para `ohc@2026`
+  (antes `icpb@2026`). Válida para instalações novas; instalações existentes
+  mantêm a senha salva em `config/settings.json`.
 - Identidade do projeto renomeada para **OHC — OBS Holyrics Controller**
   (nome, título do painel, PWA e pacotes npm).
 - Licença **MIT** adicionada ao projeto.

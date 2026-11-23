@@ -40,7 +40,7 @@ function createDefaultSettings(): AppSettings {
       stageViewIntervalMs: 500,
     },
     admin: {
-      passwordHash: bcrypt.hashSync('icpb@2026', 10),
+      passwordHash: bcrypt.hashSync('ohc@2026', 10),
     },
     security: {
       commandRateLimitMs: 300,

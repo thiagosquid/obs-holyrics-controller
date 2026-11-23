@@ -74,7 +74,7 @@ Edite `config/settings.json`:
 - `holyrics.token`: token criado em *Arquivo > Configurações > API Server > Gerenciar permissões*.
 - `server.host`: `0.0.0.0` permite acesso de outros dispositivos na LAN.
 
-Senha padrão do painel administrativo: `icpb@2026`.
+Senha padrão do painel administrativo: `ohc@2026`.
 
 ## Como usar no Windows
 
