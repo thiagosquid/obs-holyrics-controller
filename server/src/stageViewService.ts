@@ -39,7 +39,7 @@ export class StageViewService {
     this.stopped = false;
     this.schedule(0);
     logger.info(
-      `Stage view ativado: http://${this.settings.holyrics.host}:${this.settings.holyrics.stageViewPort}/view/widescreen`
+      `Stage view ativado: http://${this.settings.holyrics.host}:${this.settings.holyrics.stageViewPort}/stage-view/widescreen`
     );
   }
 
@@ -114,7 +114,9 @@ export class StageViewService {
       const message = err instanceof Error ? err.message : String(err);
       this.error = message;
       if (this.lastLoggedError !== message) {
-        logger.warn(`Stage view indisponível: ${message}`);
+        logger.warn(
+          `Stage view indisponível (${url}): ${message}. Verifique se o plugin "Servidor Web" do Holyrics está ativo nesta porta.`
+        );
         this.lastLoggedError = message;
       }
       this.schedule(2000);
