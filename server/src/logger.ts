@@ -5,8 +5,20 @@ import { isPackaged } from './paths';
 
 const { combine, timestamp, printf, colorize, errors } = winston.format;
 
-const logFormat = printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} [${level}]: ${stack || message}`;
+const logFormat = printf((info) => {
+  const { level, message, timestamp, stack } = info;
+  let out = stack || message;
+  // O winston descarta o "splat" (argumentos extras) quando não há %s no texto.
+  // Sem isto, `logger.error('Falha:', motivo)` perdia o `motivo` no arquivo.
+  const splat = info[Symbol.for('splat')];
+  if (Array.isArray(splat) && splat.length) {
+    const extra = splat
+      .filter((s) => !(s instanceof Error))
+      .map((s) => (typeof s === 'string' ? s : JSON.stringify(s)))
+      .join(' ');
+    if (extra) out = `${out} ${extra}`;
+  }
+  return `${timestamp} [${level}]: ${out}`;
 });
 
 function redactToken(msg: string): string {
