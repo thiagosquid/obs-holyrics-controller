@@ -1,6 +1,6 @@
 {
-  "name": "Holyrics Web Controller",
-  "short_name": "Holyrics",
+  "name": "OHC — OBS Holyrics Controller",
+  "short_name": "OHC",
   "description": "Controle e acompanhamento da apresentação do Holyrics na rede local",
   "start_url": "/presenter",
   "scope": "/",

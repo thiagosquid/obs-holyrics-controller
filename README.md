@@ -1,6 +1,9 @@
-# Holyrics Web Controller
+# OHC — OBS Holyrics Controller
 
 Sistema portátil de controle remoto do Holyrics, com integração ao OBS Studio e interface web para palestrantes.
+
+> **OHC não é afiliado ao OBS Studio nem ao Holyrics.** O OHC apenas utiliza a
+> API oficial do [Holyrics API Server](https://github.com/holyrics/API-Server).
 
 ## Visão geral
 
