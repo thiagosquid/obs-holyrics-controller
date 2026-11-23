@@ -5,6 +5,15 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.2] - 2026-11-23
+
+### Corrigido
+
+- Dock da Bíblia exibia "Desconectado" mesmo estando conectado e funcionando:
+  o middleware do WebSocket não permitia conexão sem autenticação para o
+  referer `/bible` (apenas `/lyrics` e `/slides` eram aceitos). Adicionado
+  `/bible` à lista de docks permitidos.
+
 ## [1.0.1] - 2026-11-23
 
 ### Adicionado

@@ -51,7 +51,11 @@ export function createWebSocket(
 
     // Docks do OBS (acesso local/controle do operador) podem conectar sem autenticação
     const referer = String(socket.handshake.headers.referer || '');
-    if (referer.includes('/lyrics') || referer.includes('/slides')) {
+    if (
+      referer.includes('/lyrics') ||
+      referer.includes('/slides') ||
+      referer.includes('/bible')
+    ) {
       (socket as any).clientInfo = {
         socketId: socket.id,
         isAdmin: false,
