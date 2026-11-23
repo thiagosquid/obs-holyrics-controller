@@ -5,6 +5,7 @@ client/node_modules/
 # Build
 server/dist/
 client/dist/
+server/build/
 
 # Runtime portátil (baixado automaticamente)
 runtime/node/

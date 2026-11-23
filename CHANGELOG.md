@@ -9,8 +9,22 @@ e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Planejado
 
-- Evolução para produto: executável com ícone na bandeja (Windows e Linux),
-  atualização automática via GitHub Releases e site com download e tutorial.
+- Atualização automática via GitHub Releases e site com download e tutorial.
+
+### Adicionado
+
+- **Launcher com ícone na bandeja** (`launcher.ts`, entrada do executável):
+  status do servidor, abrir painel e encerrar — com fallback automático para
+  modo headless (`--no-tray`) quando a bandeja não estiver disponível.
+- **Executáveis empacotados** com `@yao-pkg/pkg` (Node 22.23.5 embutido):
+  `ohc` (Linux, ~91MB) e `OHC.exe` (Windows, ~75MB, subsystem GUI — sem
+  janela de terminal).
+- Caminhos separados para dados graváveis (ao lado do executável, modo
+  portátil) e assets somente leitura (frontend embutido no binário).
+- Correção de compatibilidade com o systray2: o helper da bandeja é copiado
+  para `<dados>/tray/<versão>/` com permissão 0o755 (o chmod interno do
+  systray2 usa modo simbólico que o Node não aceita).
+- Script `scripts/patch-pe-gui.py` para converter o executável Windows em GUI.
 
 ### Alterado
 

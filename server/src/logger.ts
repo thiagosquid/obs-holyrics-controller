@@ -1,6 +1,7 @@
 import winston from 'winston';
 import path from 'path';
 import { LOGS_DIR } from './config';
+import { isPackaged } from './paths';
 
 const { combine, timestamp, printf, colorize, errors } = winston.format;
 
@@ -43,7 +44,8 @@ export const logger = winston.createLogger({
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
+// No executável empacotado não há console: apenas arquivo de log
+if (process.env.NODE_ENV !== 'production' && !isPackaged()) {
   logger.add(
     new winston.transports.Console({
       format: combine(

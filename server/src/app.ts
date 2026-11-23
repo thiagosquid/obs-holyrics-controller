@@ -4,7 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import type { AppSettings } from './types';
 import { logger } from './logger';
-import { PROJECT_ROOT, DATA_DIR } from './config';
+import { DATA_DIR } from './config';
+import { getPublicDir } from './paths';
 import { getLocalIp } from './network';
 import { HolyricsApiService } from './holyricsApiService';
 import { StateManager } from './stateManager';
@@ -67,8 +68,9 @@ export function createOHCServer(settings: AppSettings): OHCHandle {
     })
   );
 
-  const indexHtml = path.join(PROJECT_ROOT, 'server', 'public', 'index.html');
-  app.use(express.static(path.join(PROJECT_ROOT, 'server', 'public')));
+  const publicDir = getPublicDir();
+  const indexHtml = path.join(publicDir, 'index.html');
+  app.use(express.static(publicDir));
 
   // Redirecionamentos amigáveis
   for (const route of ['/admin', '/lyrics', '/bible', '/slides', '/presenter']) {

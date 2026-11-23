@@ -1,16 +1,13 @@
 import fs from 'fs';
 import path from 'path';
+import bcrypt from 'bcryptjs';
 import type { AppSettings } from './types';
+import { getDataRoot } from './paths';
 
-function getProjectRoot(): string {
-  // __dirname is server/dist (compiled) or server/src (ts-node)
-  return path.resolve(__dirname, '../..');
-}
-
-export const PROJECT_ROOT = getProjectRoot();
-export const CONFIG_DIR = path.join(PROJECT_ROOT, 'config');
-export const LOGS_DIR = path.join(PROJECT_ROOT, 'logs');
-export const DATA_DIR = path.join(PROJECT_ROOT, 'data');
+const DATA_ROOT = getDataRoot();
+export const CONFIG_DIR = path.join(DATA_ROOT, 'config');
+export const LOGS_DIR = path.join(DATA_ROOT, 'logs');
+export const DATA_DIR = path.join(DATA_ROOT, 'data');
 export const SETTINGS_PATH = path.join(CONFIG_DIR, 'settings.json');
 
 function ensureDirs() {
@@ -20,8 +17,6 @@ function ensureDirs() {
 }
 
 function createDefaultSettings(): AppSettings {
-  // Lazy require so bcryptjs is loaded only when needed
-  const bcrypt = require('bcryptjs');
   return {
     server: {
       host: '0.0.0.0',

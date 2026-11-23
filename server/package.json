@@ -3,16 +3,33 @@
   "version": "0.8.0",
   "description": "OHC — OBS Holyrics Controller (backend)",
   "main": "dist/index.js",
+  "bin": "dist/launcher.js",
+  "pkg": {
+    "targets": [
+      "node22.23.5-linux-x64",
+      "node22.23.5-win-x64"
+    ],
+    "outputPath": "build",
+    "assets": [
+      "public/**/*",
+      "assets/**/*",
+      "node_modules/systray2/traybin/**/*",
+      "node_modules/socket.io/client-dist/**/*"
+    ]
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
+    "launcher": "node dist/launcher.js",
     "dev": "ts-node src/index.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "build:bin": "npm run build && pkg ."
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
     "socket.io": "^4.7.5",
+    "systray2": "^2.1.4",
     "winston": "^3.13.1",
     "winston-daily-rotate-file": "^5.0.0"
   },
@@ -20,6 +37,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.10",
+    "@yao-pkg/pkg": "^6.26.0",
     "socket.io-client": "^4.8.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
