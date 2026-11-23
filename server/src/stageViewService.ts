@@ -39,7 +39,7 @@ export class StageViewService {
     this.stopped = false;
     this.schedule(0);
     logger.info(
-      `Stage view ativado: http://${this.settings.holyrics.host}:${this.settings.holyrics.stageViewPort}/stage-view/widescreen`
+      `Stage view ativado: http://${this.settings.holyrics.host}:${this.settings.holyrics.stageViewPort}/view/widescreen`
     );
   }
 
