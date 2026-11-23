@@ -38,6 +38,13 @@ e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
   (nome, título do painel, PWA e pacotes npm).
 - Licença **MIT** adicionada ao projeto.
 
+### Corrigido
+
+- Executável Windows (`OHC.exe`) que fechava na inicialização por causa do
+  bytecode V8 gerado em outra plataforma: o build agora usa
+  `--public --public-packages "*"`, que embute o JavaScript como código-fonte
+  (sem bytecode) e permite gerar o binário Windows a partir do Linux.
+
 ## [0.8.0] - 2026-11-23
 
 Baseline do controller web portátil.

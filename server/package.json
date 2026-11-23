@@ -23,7 +23,7 @@
     "launcher": "node dist/launcher.js",
     "dev": "ts-node src/index.ts",
     "check": "tsc --noEmit",
-    "build:bin": "npm run build && pkg ."
+    "build:bin": "npm run build && pkg . --public --public-packages \"*\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
