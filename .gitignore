@@ -1,0 +1,23 @@
+# Dependências
+server/node_modules/
+client/node_modules/
+
+# Build
+server/dist/
+client/dist/
+
+# Runtime portátil (baixado automaticamente)
+runtime/node/
+
+# Configurações e dados locais
+config/settings.json
+data/
+logs/
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+Thumbs.db

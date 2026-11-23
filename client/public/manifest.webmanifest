@@ -1,0 +1,17 @@
+{
+  "name": "Holyrics Web Controller",
+  "short_name": "Holyrics",
+  "description": "Controle e acompanhamento da apresentação do Holyrics na rede local",
+  "start_url": "/presenter",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
