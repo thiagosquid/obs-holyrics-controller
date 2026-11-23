@@ -49,7 +49,7 @@ set PORT=
 "%NODE_EXE%" -p "require('./config/settings.json').server.port" > "%TEMP%\hwc_port.txt" 2>nul
 if exist "%TEMP%\hwc_port.txt" set /p PORT=<"%TEMP%\hwc_port.txt"
 del "%TEMP%\hwc_port.txt" >nul 2>&1
-if "!PORT!"=="" set PORT=3000
+if "!PORT!"=="" set PORT=8585
 
 echo Verificando se a porta !PORT! esta disponivel...
 netstat -ano | findstr /C:":!PORT! " >nul

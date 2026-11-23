@@ -53,7 +53,7 @@ Edite `config/settings.json`:
 {
   "server": {
     "host": "0.0.0.0",
-    "port": 3000,
+    "port": 8585,
     "openBrowser": true
   },
   "holyrics": {
@@ -97,19 +97,19 @@ cd HolyricsWebController
 
 Substitua `IP-DO-SERVIDOR` pelo IP local do computador que executa o Holyrics e o Controller.
 
-- Painel administrativo: `http://IP-DO-SERVIDOR:3000/admin`
-- Dock de letras (OBS): `http://localhost:3000/lyrics`
-- Dock de versículos (OBS): `http://localhost:3000/bible`
-- Dock de slides (OBS): `http://localhost:3000/slides`
-- Interface do palestrante: `http://IP-DO-SERVIDOR:3000/presenter?token=TOKEN_DA_SESSAO`
+- Painel administrativo: `http://IP-DO-SERVIDOR:8585/admin`
+- Dock de letras (OBS): `http://localhost:8585/lyrics`
+- Dock de versículos (OBS): `http://localhost:8585/bible`
+- Dock de slides (OBS): `http://localhost:8585/slides`
+- Interface do palestrante: `http://IP-DO-SERVIDOR:8585/presenter?token=TOKEN_DA_SESSAO`
 
 ## Adicionando os docks no OBS Studio
 
 1. No OBS, vá em **Docks > Custom Browser Docks...**
 2. Adicione:
-   - Nome: `Holyrics Lyrics` | URL: `http://localhost:3000/lyrics`
-   - Nome: `Holyrics Versículos` | URL: `http://localhost:3000/bible`
-   - Nome: `Holyrics Slides` | URL: `http://localhost:3000/slides`
+   - Nome: `Holyrics Lyrics` | URL: `http://localhost:8585/lyrics`
+   - Nome: `Holyrics Versículos` | URL: `http://localhost:8585/bible`
+   - Nome: `Holyrics Slides` | URL: `http://localhost:8585/slides`
 3. Clique em **Apply**.
 
 ## Criando sessão para palestrante
@@ -121,10 +121,10 @@ Substitua `IP-DO-SERVIDOR` pelo IP local do computador que executa o Holyrics e 
 
 ## Firewall
 
-Se outros dispositivos não conseguirem acessar, permita a porta configurada (padrão 3000) no firewall do Windows:
+Se outros dispositivos não conseguirem acessar, permita a porta configurada (padrão 8585) no firewall do Windows:
 
 ```powershell
-netsh advfirewall firewall add rule name="Holyrics Web Controller" dir=in action=allow protocol=tcp localport=3000
+netsh advfirewall firewall add rule name="Holyrics Web Controller" dir=in action=allow protocol=tcp localport=8585
 ```
 
 ## Limitações conhecidas

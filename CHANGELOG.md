@@ -14,6 +14,9 @@ e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
 ### Alterado
 
+- Porta padrão do servidor alterada de `3000` para `8585` (porta menos comum,
+  evitando conflito com ferramentas de desenvolvimento). Instalações existentes
+  mantêm a porta salva em `config/settings.json`.
 - Senha padrão do painel administrativo alterada para `ohc@2026`
   (antes `icpb@2026`). Válida para instalações novas; instalações existentes
   mantêm a senha salva em `config/settings.json`.
