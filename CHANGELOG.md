@@ -5,6 +5,15 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.0.1] - 2026-11-23
+
+### Adicionado
+
+- Cabeçalho unificado nos docks do OBS (ícone colorido + título + subtítulo +
+  status de conexão), com ícones distintos por dock: 🎤 Letras (verde),
+  🖼️ Slides (azul) e 📖 Bíblia (âmbar).
+- Status de conexão no dock da Bíblia (antes ausente).
+
 ## [1.0.0] - 2026-11-23
 
 ### Adicionado
