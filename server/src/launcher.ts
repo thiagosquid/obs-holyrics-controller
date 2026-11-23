@@ -178,14 +178,14 @@ async function createTray(opts: {
   }
 }
 
-async function runUpdateFlow() {
+async function runUpdateFlow(restart: () => Promise<void>) {
   if (!isPackaged()) {
     logger.warn('Atualização automática disponível apenas no executável empacotado.');
     return;
   }
   const st = getUpdateState();
   if (st.status === 'ready' && st.downloadedPath) {
-    applyUpdateAndRestart();
+    if (applyUpdateAndRestart()) await restart();
     return;
   }
   const info = await checkForUpdate();
@@ -196,8 +196,8 @@ async function runUpdateFlow() {
     return;
   }
   const downloaded = await downloadLatest(info);
-  if (downloaded) {
-    applyUpdateAndRestart();
+  if (downloaded && applyUpdateAndRestart()) {
+    await restart();
   }
 }
 
@@ -248,7 +248,7 @@ async function main() {
     port,
     onOpenPanel: () => openBrowser(`http://localhost:${port}/admin`),
     onUpdate: () => {
-      runUpdateFlow().catch(() => {});
+      runUpdateFlow(() => shutdown('atualização')).catch(() => {});
     },
     onExit: () => shutdown('bandeja'),
   });

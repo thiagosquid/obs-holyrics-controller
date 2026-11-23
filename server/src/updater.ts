@@ -206,7 +206,6 @@ export function applyUpdate(restart: boolean): boolean {
   if (!isPackaged()) return false;
   const downloadedPath = state.downloadedPath;
   if (!downloadedPath || !fs.existsSync(downloadedPath)) {
-    logger.warn('Nenhuma atualização baixada para aplicar.');
     return false;
   }
 
@@ -224,13 +223,16 @@ export function applyUpdate(restart: boolean): boolean {
       fs.chmodSync(downloadedPath, 0o755);
       fs.renameSync(downloadedPath, target);
       if (restart) {
-        const child = spawn(target, process.argv.slice(1), {
-          detached: true,
-          stdio: 'ignore',
-        });
+        // Reinicia após 2s para o processo atual encerrar e liberar a porta.
+        const child = spawn(
+          'sh',
+          ['-c', 'sleep 2; exec "$0" "$@"', target, ...process.argv.slice(1)],
+          { detached: true, stdio: 'ignore' }
+        );
         child.unref();
       }
     }
+    state = { ...state, status: 'idle', downloadedPath: undefined };
     logger.info(restart ? 'Reiniciando com a nova versão...' : 'Atualização aplicada.');
     return true;
   } catch (err) {
