@@ -8,6 +8,14 @@ import { logger } from './logger';
 import { createOHCServer } from './app';
 import { openBrowser } from './browser';
 import { getDataRoot, isPackaged } from './paths';
+import { APP_VERSION } from './version';
+import {
+  checkForUpdate,
+  downloadLatest,
+  applyUpdateAndRestart,
+  applyUpdateOnExit,
+  getUpdateState,
+} from './updater';
 
 /**
  * Launcher do OHC: inicia o servidor local e mantém um ícone na bandeja
@@ -93,6 +101,7 @@ interface TrayHandle {
 async function createTray(opts: {
   port: number;
   onOpenPanel: () => void;
+  onUpdate: () => void;
   onExit: () => void;
 }): Promise<TrayHandle | null> {
   const statusItem: MenuItem = {
@@ -104,6 +113,12 @@ async function createTray(opts: {
   const openItem: MenuItem = {
     title: 'Abrir painel',
     tooltip: 'Abre o painel administrativo no navegador',
+    checked: false,
+    enabled: true,
+  };
+  const updateItem: MenuItem = {
+    title: 'Atualizar OHC',
+    tooltip: 'Verifica e instala a versão mais recente',
     checked: false,
     enabled: true,
   };
@@ -119,7 +134,7 @@ async function createTray(opts: {
       icon: trayIconPath(),
       title: 'OHC',
       tooltip: 'OHC — OBS Holyrics Controller',
-      items: [statusItem, SysTray.separator, openItem, exitItem],
+      items: [statusItem, SysTray.separator, openItem, updateItem, exitItem],
     },
     debug: false,
     copyDir: prepareTrayBin(),
@@ -135,6 +150,8 @@ async function createTray(opts: {
     systray.onClick((action) => {
       if (action.item.title === openItem.title) {
         opts.onOpenPanel();
+      } else if (action.item.title === updateItem.title) {
+        opts.onUpdate();
       } else if (action.item.title === exitItem.title) {
         opts.onExit();
       }
@@ -161,10 +178,33 @@ async function createTray(opts: {
   }
 }
 
+async function runUpdateFlow() {
+  if (!isPackaged()) {
+    logger.warn('Atualização automática disponível apenas no executável empacotado.');
+    return;
+  }
+  const st = getUpdateState();
+  if (st.status === 'ready' && st.downloadedPath) {
+    applyUpdateAndRestart();
+    return;
+  }
+  const info = await checkForUpdate();
+  if (!info) {
+    if (getUpdateState().status === 'up-to-date') {
+      logger.info(`OHC já está atualizado (v${APP_VERSION}).`);
+    }
+    return;
+  }
+  const downloaded = await downloadLatest(info);
+  if (downloaded) {
+    applyUpdateAndRestart();
+  }
+}
+
 async function main() {
   const noTray = process.argv.includes('--no-tray');
 
-  logger.info('Iniciando OHC — OBS Holyrics Controller...');
+  logger.info(`Iniciando OHC — OBS Holyrics Controller v${APP_VERSION}...`);
 
   const settings = loadSettings();
   const handle = createOHCServer(settings);
@@ -177,6 +217,21 @@ async function main() {
     openBrowser(adminUrl);
   }
 
+  // Verificação de atualização em segundo plano (apenas no executável).
+  // Baixa a nova versão, que será aplicada ao encerrar ou via "Atualizar OHC".
+  if (isPackaged()) {
+    checkForUpdate()
+      .then((info) => (info ? downloadLatest(info) : null))
+      .then((downloaded) => {
+        if (downloaded) {
+          logger.info(
+            'Atualização pronta. Use "Atualizar OHC" na bandeja ou encerre o OHC para aplicar.'
+          );
+        }
+      })
+      .catch(() => {});
+  }
+
   let exiting = false;
 
   async function shutdown(signal: string) {
@@ -185,12 +240,16 @@ async function main() {
     logger.info(`Encerrando (${signal})...`);
     if (tray) tray.kill();
     await handle.stop();
+    if (isPackaged()) applyUpdateOnExit();
     process.exit(0);
   }
 
   const tray = noTray ? null : await createTray({
     port,
     onOpenPanel: () => openBrowser(`http://localhost:${port}/admin`),
+    onUpdate: () => {
+      runUpdateFlow().catch(() => {});
+    },
     onExit: () => shutdown('bandeja'),
   });
 

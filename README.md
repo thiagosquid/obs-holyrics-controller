@@ -1,53 +1,66 @@
 # OHC — OBS Holyrics Controller
 
-Sistema portátil de controle remoto do Holyrics, com integração ao OBS Studio e interface web para palestrantes.
+Controlador local, gratuito e portátil do [Holyrics](https://holyrics.com.br), com integração ao
+[OBS Studio](https://obsproject.com) e interface web para palestrantes. Tudo roda no navegador, na sua rede local.
 
 > **OHC não é afiliado ao OBS Studio nem ao Holyrics.** O OHC apenas utiliza a
-> API oficial do [Holyrics API Server](https://github.com/holyrics/API-Server).
+> API oficial do [Holyrics API Server](https://github.com/holyrics/API-Server)
+> e o plugin WebService do Holyrics.
+
+## Baixar
+
+| Plataforma | Arquivo |
+|---|---|
+| Windows | [`OHC.exe`](https://github.com/thiagosquid/obs-holyrics-controller/releases/latest/download/OHC.exe) |
+| Linux | [`ohc`](https://github.com/thiagosquid/obs-holyrics-controller/releases/latest/download/ohc) |
+
+- **[Site com tutorial](https://thiagosquid.github.io/obs-holyrics-controller/)**
+- **[Todas as versões](https://github.com/thiagosquid/obs-holyrics-controller/releases)**
+
+Os executáveis são únicos e portáteis: não exigem instalação nem Node.js. A
+atualização automática baixa e aplica novas versões sozinha.
 
 ## Visão geral
 
-O Holyrics Web Controller se conecta ao **Holyrics API Server** oficial e fornece:
+O OHC se conecta ao **Holyrics API Server** oficial e fornece:
 
 - Painel administrativo web (`/admin`)
-- Dock do OBS para controle de letras (`/lyrics`)
+- Dock do OBS para letras (`/lyrics`)
 - Dock do OBS para versículos bíblicos (`/bible`)
-- Dock do OBS para controle e pré-visualização de slides (`/slides`)
+- Dock do OBS para slides (`/slides`)
 - Interface web para palestrantes (`/presenter`)
 - Sincronização em tempo real via WebSocket
 
-O Holyrics continua sendo a fonte de verdade. Este projeto apenas consulta o estado e executa ações oficiais da API.
+O Holyrics continua sendo a fonte de verdade: o OHC apenas consulta o estado e executa ações oficiais da API.
 
 ## Requisitos
 
-- Computador com **Holyrics** instalado e **API Server** ativado.
+- Computador com **Holyrics** instalado e **API Server** ativado (porta 8091).
 - Todos os dispositivos na mesma rede local (LAN/Wi-Fi).
-- No Windows: pasta do projeto extraída. O pacote portátil já inclui o Node.js em `runtime/node/`; se essa pasta não existir, o `iniciar.bat` baixa automaticamente.
-- No Linux/macOS: Node.js 18+ instalado para desenvolvimento/testes.
 
-## Estrutura
+## Instalação
 
+### Windows
+
+1. Baixe o `OHC.exe` e coloque em uma pasta (ex.: `Documentos\OHC`).
+2. Dê dois cliques. Na primeira vez, o Windows mostra o **SmartScreen** —
+   clique em **“Mais informações” → “Executar assim mesmo”**.
+3. Um ícone aparece na **bandeja** (setinha ⬆️ ao lado do relógio) e o painel abre no navegador.
+
+### Linux
+
+```bash
+chmod +x ohc
+./ohc
 ```
-HolyricsWebController/
-├── iniciar.bat              # inicia no Windows
-├── parar.bat                # encerra no Windows
-├── iniciar_oculto.vbs       # inicia oculto no Windows
-├── download-node.bat        # baixa Node.js portátil no Windows
-├── iniciar.sh               # inicia no Linux/macOS (desenvolvimento)
-├── config/settings.json     # configurações locais
-├── data/                    # sessões, PID
-├── logs/                    # logs do servidor
-├── runtime/node/            # Node.js portátil (Windows)
-├── server/                  # backend Node.js + TypeScript
-│   ├── src/                 # código-fonte
-│   ├── public/              # páginas web
-│   └── dist/                # código compilado
-└── client/                  # frontend React (futuro)
-```
+
+Os dados (configurações, sessões e logs) ficam **ao lado do executável**, em modo
+portátil — é possível copiar a pasta inteira para outro computador.
 
 ## Configuração
 
-Edite `config/settings.json`:
+A configuração é feita pelo painel administrativo (`/admin`), mas também pode ser
+editada em `config/settings.json` (criado na primeira execução, ao lado do executável):
 
 ```json
 {
@@ -71,61 +84,95 @@ Edite `config/settings.json`:
 ```
 
 - `holyrics.host` e `holyrics.port`: endereço do API Server do Holyrics.
-- `holyrics.token`: token criado em *Arquivo > Configurações > API Server > Gerenciar permissões*.
+- `holyrics.token`: token criado em *Configurações → API Server*. **Marque todas as permissões ao criar o token**.
 - `server.host`: `0.0.0.0` permite acesso de outros dispositivos na LAN.
 
-Senha padrão do painel administrativo: `ohc@2026`.
-
-## Como usar no Windows
-
-1. Extraia a pasta do projeto.
-2. O pacote portátil já inclui o Node.js em `runtime/node/`. Se essa pasta não existir, o `iniciar.bat` baixa automaticamente na primeira execução.
-3. Ajuste `config/settings.json` com o IP e token do Holyrics.
-4. Execute `iniciar.bat`.
-5. O navegador abrirá o painel administrativo.
-
-Para encerrar, use `parar.bat`.
-
-## Como usar no Linux/macOS (desenvolvimento)
-
-```bash
-cd HolyricsWebController
-./iniciar.sh
-```
+Senha padrão do painel administrativo: `ohc@2026` (troque após o primeiro acesso).
 
 ## Endereços de acesso
 
-Substitua `IP-DO-SERVIDOR` pelo IP local do computador que executa o Holyrics e o Controller.
+Substitua `IP` pelo IP local do computador que executa o OHC.
 
-- Painel administrativo: `http://IP-DO-SERVIDOR:8585/admin`
-- Dock de letras (OBS): `http://localhost:8585/lyrics`
-- Dock de versículos (OBS): `http://localhost:8585/bible`
-- Dock de slides (OBS): `http://localhost:8585/slides`
-- Interface do palestrante: `http://IP-DO-SERVIDOR:8585/presenter?token=TOKEN_DA_SESSAO`
+- Painel administrativo: `http://IP:8585/admin`
+- Dock de letras (OBS): `http://IP:8585/lyrics`
+- Dock de versículos (OBS): `http://IP:8585/bible`
+- Dock de slides (OBS): `http://IP:8585/slides`
+- Interface do palestrante: `http://IP:8585/presenter?token=TOKEN_DA_SESSAO`
 
-## Adicionando os docks no OBS Studio
+## Integração com o OBS Studio
 
-1. No OBS, vá em **Docks > Custom Browser Docks...**
+1. No OBS, vá em **Docks → Custom Browser Docks...**.
 2. Adicione:
-   - Nome: `Holyrics Lyrics` | URL: `http://localhost:8585/lyrics`
-   - Nome: `Holyrics Versículos` | URL: `http://localhost:8585/bible`
-   - Nome: `Holyrics Slides` | URL: `http://localhost:8585/slides`
+   - Nome: `Holyrics Lyrics` · URL: `http://IP:8585/lyrics`
+   - Nome: `Holyrics Versículos` · URL: `http://IP:8585/bible`
+   - Nome: `Holyrics Slides` · URL: `http://IP:8585/slides`
 3. Clique em **Apply**.
 
-## Criando sessão para palestrante
+## Sessão de palestrante
 
 1. Acesse o painel administrativo (`/admin`).
 2. Clique em **Nova sessão de palestrante**.
 3. Copie o link gerado e envie ao palestrante.
 4. Você pode revogar ou bloquear a sessão a qualquer momento.
 
+## Atualização automática
+
+O OHC verifica novas versões no GitHub Releases ao iniciar e baixa a atualização em
+segundo plano. Ela é aplicada:
+
+- automaticamente ao **encerrar** o OHC, ou
+- a qualquer momento pelo menu da bandeja → **Atualizar OHC** (reinicia na nova versão).
+
 ## Firewall
 
 Se outros dispositivos não conseguirem acessar, permita a porta configurada (padrão 8585) no firewall do Windows:
 
 ```powershell
-netsh advfirewall firewall add rule name="Holyrics Web Controller" dir=in action=allow protocol=tcp localport=8585
+netsh advfirewall firewall add rule name="OHC" dir=in action=allow protocol=tcp localport=8585
 ```
+
+## Desenvolvimento
+
+### Estrutura
+
+```
+├── server/                  # backend Node.js + TypeScript (Express + Socket.IO)
+│   ├── src/                 # código-fonte
+│   │   ├── launcher.ts      # entrada do executável (bandeja + servidor)
+│   │   ├── updater.ts       # atualização automática via GitHub Releases
+│   │   └── ...
+│   ├── public/              # frontend compilado (embutido no binário)
+│   └── scripts/             # patch-pe-gui.py e release.sh
+├── client/                  # frontend React
+├── docs/                    # site de download e tutorial (GitHub Pages)
+├── config/ data/ logs/      # dados gerados em execução (modo portátil)
+└── CHANGELOG.md
+```
+
+### Rodar em desenvolvimento
+
+```bash
+cd server
+npm install
+npm run dev          # inicia com ts-node (sem bandeja)
+npm run launcher     # inicia com bandeja (a partir de dist/)
+```
+
+### Gerar os executáveis
+
+```bash
+cd server
+npm run build:bin    # gera build/ohc (Linux) e build/OHC.exe (Windows)
+```
+
+### Publicar um release
+
+```bash
+# após commitar e enviar o código (git push)
+bash server/scripts/release.sh
+```
+
+O script compila os binários e cria o release no GitHub com os ativos `ohc` e `OHC.exe`.
 
 ## Limitações conhecidas
 
@@ -142,4 +189,4 @@ netsh advfirewall firewall add rule name="Holyrics Web Controller" dir=in action
 
 ## Licença
 
-Uso interno. Consulte a documentação oficial do Holyrics API Server para os termos de uso da API.
+[MIT](LICENSE). Consulte a documentação oficial do Holyrics API Server para os termos de uso da API.

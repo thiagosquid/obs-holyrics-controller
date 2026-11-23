@@ -5,14 +5,16 @@ Todas as mudanças notáveis deste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
 
-## [Não publicado]
-
-### Planejado
-
-- Atualização automática via GitHub Releases e site com download e tutorial.
+## [1.0.0] - 2026-11-23
 
 ### Adicionado
 
+- **Atualização automática via GitHub Releases** (`updater.ts`): verifica a
+  versão mais recente, baixa o binário da plataforma e aplica ao encerrar ou
+  via item "Atualizar OHC" na bandeja (com reinício opcional).
+- Script `scripts/release.sh` para compilar os binários e publicar o release no
+  GitHub com os ativos `ohc` (Linux) e `OHC.exe` (Windows).
+- Site de download e tutorial em `docs/` (publicado no GitHub Pages).
 - **Launcher com ícone na bandeja** (`launcher.ts`, entrada do executável):
   status do servidor, abrir painel e encerrar — com fallback automático para
   modo headless (`--no-tray`) quando a bandeja não estiver disponível.
@@ -44,6 +46,8 @@ e o projeto adere ao [SemVer](https://semver.org/lang/pt-BR/).
   bytecode V8 gerado em outra plataforma: o build agora usa
   `--public --public-packages "*"`, que embute o JavaScript como código-fonte
   (sem bytecode) e permite gerar o binário Windows a partir do Linux.
+- Logs de erro que apareciam sem o motivo (o segundo argumento era descartado
+  pelo winston); agora o motivo real é registrado no arquivo de log.
 
 ## [0.8.0] - 2026-11-23
 

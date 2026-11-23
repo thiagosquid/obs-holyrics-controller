@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OHC — OBS Holyrics Controller</title>
+<meta name="description" content="Controle o Holyrics remotamente e integre com o OBS Studio. Download gratuito para Windows e Linux." />
+<style>
+  :root {
+    --bg: #0f1220;
+    --bg-soft: #171b2e;
+    --panel: #1d2340;
+    --line: #2b3358;
+    --text: #e9ecf6;
+    --muted: #9aa3c0;
+    --accent: #4f7cff;
+    --accent-2: #22c1a0;
+    --danger: #ff6b6b;
+    --warn: #ffc857;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -10%, #1c2c5a 0%, var(--bg) 55%);
+    color: var(--text);
+    line-height: 1.65;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 22px; }
+
+  header.top {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(8px);
+    background: rgba(15,18,32,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-weight: 700; letter-spacing: .3px; }
+  .brand small { color: var(--muted); font-weight: 500; margin-left: 6px; }
+  .nav-links a { margin-left: 18px; color: var(--muted); font-size: 14px; }
+  .nav-links a:hover { color: var(--text); }
+
+  .hero { padding: 72px 0 48px; }
+  .hero h1 { font-size: clamp(30px, 5vw, 46px); margin: 0 0 14px; line-height: 1.15; }
+  .hero h1 span { color: var(--accent); }
+  .hero p.lead { font-size: 18px; color: var(--muted); max-width: 640px; margin: 0 0 28px; }
+  .downloads { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px; border-radius: 10px; font-weight: 600; font-size: 16px;
+    border: 1px solid transparent; cursor: pointer; transition: transform .06s ease, background .2s ease;
+  }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.primary:hover { background: #3d6bf0; }
+  .btn.ghost { background: var(--panel); color: var(--text); border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--accent); }
+  .btn .os { font-size: 12px; opacity: .8; font-weight: 500; }
+  .hint { margin-top: 12px; font-size: 13px; color: var(--muted); }
+
+  section { padding: 46px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 26px; margin: 0 0 8px; }
+  h2 .num { color: var(--accent-2); margin-right: 8px; }
+  p.sub { color: var(--muted); margin: 0 0 24px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+  .card h3 { margin: 0 0 8px; font-size: 17px; }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; }
+  .card .icon { font-size: 24px; }
+
+  ol.steps { counter-reset: step; list-style: none; padding: 0; margin: 0; }
+  ol.steps li {
+    position: relative; padding: 0 0 22px 44px; counter-increment: step;
+  }
+  ol.steps li::before {
+    content: counter(step);
+    position: absolute; left: 0; top: 0;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: #fff; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+  ol.steps li b { color: var(--text); }
+
+  code, .code {
+    font-family: "SF Mono", Consolas, "Liberation Mono", monospace;
+    background: #0a0d18; border: 1px solid var(--line);
+    border-radius: 6px; padding: 2px 7px; font-size: 13.5px; color: #cfe0ff;
+  }
+  .code.block { display: block; padding: 12px 14px; margin: 10px 0; white-space: pre-wrap; word-break: break-word; }
+
+  .note { border-left: 3px solid var(--warn); background: rgba(255,200,87,.08); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 14px; }
+  .note.danger { border-color: var(--danger); background: rgba(255,107,107,.08); }
+
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; }
+  td code { background: transparent; border: none; padding: 0; }
+
+  footer { padding: 40px 0 56px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+  footer .disclaimer { margin-top: 14px; color: #6b7390; }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap nav">
+    <div class="brand">OHC <small>OBS Holyrics Controller</small></div>
+    <div class="nav-links">
+      <a href="#baixar">Baixar</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#instalar">Instalar</a>
+      <a href="#holyrics">Holyrics</a>
+      <a href="#obs">OBS</a>
+      <a href="#suporte">Suporte</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>Controle o <span>Holyrics</span> e integre com o <span>OBS Studio</span></h1>
+    <p class="lead">
+      Um controlador local, gratuito e portátil. Painel administrativo, docks para o OBS
+      e interface para palestrantes — tudo no navegador, na sua rede local.
+    </p>
+    <div class="downloads" id="baixar">
+      <a class="btn primary" href="https://github.com/thiagosquid/obs-holyrics-controller/releases/latest/download/OHC.exe">
+        Baixar para Windows <span class="os">· OHC.exe</span>
+      </a>
+      <a class="btn ghost" href="https://github.com/thiagosquid/obs-holyrics-controller/releases/latest/download/ohc">
+        Baixar para Linux <span class="os">· ohc</span>
+      </a>
+      <a class="btn ghost" href="https://github.com/thiagosquid/obs-holyrics-controller/releases/latest">
+        Ver todas as versões
+      </a>
+    </div>
+    <p class="hint">Atualização automática incluída — o OHC verifica novas versões e se atualiza sozinho.</p>
+  </div>
+
+  <section id="recursos">
+    <h2><span class="num">✦</span>Recursos</h2>
+    <p class="sub">Tudo o que você precisa para operar o Holyrics no culto.</p>
+    <div class="grid">
+      <div class="card"><div class="icon">🎛️</div><h3>Painel administrativo</h3><p>Configuração de integração, teste de conexão, dispositivos e sessões de palestrante com QR Code.</p></div>
+      <div class="card"><div class="icon">🎤</div><h3>Dock de letras</h3><p>Playlist de letras para o OBS: busque e exiba músicas diretamente no browser.</p></div>
+      <div class="card"><div class="icon">📖</div><h3>Dock de Bíblia</h3><p>Versículos em apresentação rápida, com prévia, avançar/retroceder e fechar sem perder a apresentação atual.</p></div>
+      <div class="card"><div class="icon">🖼️</div><h3>Dock de slides</h3><p>Controle e pré-visualização da playlist de mídia do Holyrics.</p></div>
+      <div class="card"><div class="icon">📱</div><h3>Interface do palestrante</h3><p>Prévia do próximo slide, sinal de carregamento e permissões por sessão. Funciona como app (PWA).</p></div>
+      <div class="card"><div class="icon">🔁</div><h3>Sincronização em tempo real</h3><p>WebSocket mantém todos os dispositivos em sincronia na hora.</p></div>
+    </div>
+  </section>
+
+  <section id="instalar">
+    <h2><span class="num">1.</span>Instalar</h2>
+    <p class="sub">É um executável único, portátil — não precisa instalar nada além de baixar e rodar.</p>
+
+    <h3>Windows</h3>
+    <ol class="steps">
+      <li>Baixe o <b>OHC.exe</b> e coloque em uma pasta (ex.: <code>Documentos\OHC</code>).</li>
+      <li>Dê dois cliques. Na primeira vez, o Windows mostrará o <b>SmartScreen</b> — clique em <b>“Mais informações” → “Executar assim mesmo”</b>.</li>
+      <li>Um ícone aparece na <b>bandeja</b> (setinha ⬆️ ao lado do relógio) e o painel abre no navegador.</li>
+    </ol>
+
+    <h3>Linux</h3>
+    <ol class="steps">
+      <li>Baixe o arquivo <b>ohc</b>.</li>
+      <li>Dê permissão de execução:
+        <span class="code block">chmod +x ohc</span>
+      </li>
+      <li>Execute:
+        <span class="code block">./ohc</span>
+      </li>
+    </ol>
+
+    <div class="note">
+      Os dados (configurações, sessões e logs) ficam <b>ao lado do executável</b>, em modo portátil —
+      você pode copiar a pasta para outro computador e levar tudo junto.
+    </div>
+  </section>
+
+  <section id="holyrics">
+    <h2><span class="num">2.</span>Configurar o Holyrics</h2>
+    <p class="sub">O OHC conversa com o Holyrics pela <b>API Server</b> oficial (porta 8091).</p>
+    <ol class="steps">
+      <li>No Holyrics, abra <b>Configurações → API Server</b> e <b>ative</b> na porta <b>8091</b>.</li>
+      <li>Crie um <b>token</b> e, ao criá-lo, <b>marque todas as permissões</b> (o OHC é um controlador local confiável).</li>
+      <li>Copie o <b>token</b> gerado.</li>
+      <li>No painel do OHC (<code>/admin</code>), preencha:
+        <table>
+          <tr><th>Campo</th><th>Valor</th></tr>
+          <tr><td>Host/IP</td><td>IP do computador do Holyrics (ex.: <code>192.168.50.222</code>)</td></tr>
+          <tr><td>Porta</td><td><code>8091</code></td></tr>
+          <tr><td>Token</td><td>o token copiado</td></tr>
+        </table>
+      </li>
+      <li>Clique em <b>Testar conexão</b> — deve aparecer a versão do Holyrics.</li>
+    </ol>
+    <div class="note danger">
+      Se aparecer <b>“unauthorized action”</b> no log, é porque o token foi criado <b>sem permissões</b>.
+      Volte ao API Server e marque as permissões (ou recrie o token marcando todas).
+    </div>
+  </section>
+
+  <section id="obs">
+    <h2><span class="num">3.</span>Integrar com o OBS Studio</h2>
+    <p class="sub">Adicione os docks do OHC como fontes de navegador no OBS.</p>
+    <ol class="steps">
+      <li>No OBS, crie uma <b>Fonte → Navegador</b>.</li>
+      <li>Use as URLs do OHC (substitua pelo IP do computador do OHC):
+        <table>
+          <tr><th>Dock</th><th>URL</th></tr>
+          <tr><td>Letras</td><td><code>http://IP:8585/lyrics</code></td></tr>
+          <tr><td>Bíblia</td><td><code>http://IP:8585/bible</code></td></tr>
+          <tr><td>Slides</td><td><code>http://IP:8585/slides</code></td></tr>
+        </table>
+      </li>
+      <li>Na fonte, marque <b>“Ocultar quando não estiver ativa”</b> para o dock aparecer/desaparecer conforme o uso.</li>
+    </ol>
+  </section>
+
+  <section id="suporte">
+    <h2><span class="num">4.</span>Problemas comuns</h2>
+    <div class="grid">
+      <div class="card"><h3>🛡️ SmartScreen bloqueia</h3><p>Na primeira execução, use “Mais informações → Executar assim mesmo”. É normal para programas sem assinatura digital.</p></div>
+      <div class="card"><h3>🔌 Não conecta no Holyrics</h3><p>Confira se o <b>API Server</b> está ativo na 8091, se o IP está certo e se o token tem permissões. Veja os logs em <code>logs/server.log</code>.</p></div>
+      <div class="card"><h3>🧱 Firewall</h3><p>O Windows pode perguntar se o OHC pode acessar a rede — permita. Para usar o painel de outro aparelho, libere a porta <b>8585</b>.</p></div>
+      <div class="card"><h3>👻 Ícone não aparece</h3><p>Clique na setinha ⬆️ perto do relógio — o Windows costuma esconder ícones novos da bandeja.</p></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><b>OHC — OBS Holyrics Controller</b> · Licença <a href="https://github.com/thiagosquid/obs-holyrics-controller/blob/main/LICENSE">MIT</a> · Código-fonte no <a href="https://github.com/thiagosquid/obs-holyrics-controller">GitHub</a>.</div>
+    <div class="disclaimer">
+      OHC não é afiliado ao OBS Studio nem ao Holyrics. Utiliza apenas a API oficial do
+      <a href="https://github.com/holyrics/API-Server">Holyrics API Server</a> e o plugin WebService do Holyrics.
+    </div>
+  </div>
+</footer>
+</body>
+</html>
