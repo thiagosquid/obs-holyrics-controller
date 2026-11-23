@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useStageView } from '../hooks/useStageView';
+import { useSocket } from '../hooks/useSocket';
+import { DockHeader } from '../components/DockHeader';
 import type { BibleBook, BibleVersion } from '../types';
 
 export default function BibleDock() {
@@ -14,6 +16,7 @@ export default function BibleDock() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const stageView = useStageView();
+  const { connected, state } = useSocket({});
 
   const loadBooks = async (language: string) => {
     if (!language) return;
@@ -158,10 +161,14 @@ export default function BibleDock() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 p-3 flex flex-col gap-3">
-      <header className="flex items-center justify-between">
-        <h1 className="text-sm font-bold text-slate-300">Versículo Bíblico</h1>
-        <span className="text-[10px] text-slate-500">Abre em modo rápido</span>
-      </header>
+      <DockHeader
+        icon="📖"
+        title="Bíblia"
+        subtitle="Versículo rápido"
+        accent="bg-amber-600"
+        connected={connected}
+        holyricsConnected={state?.connected ?? false}
+      />
 
       <div className="relative bg-black rounded-lg overflow-hidden border border-slate-700 aspect-video max-h-44 flex items-center justify-center">
         {stageView.src ? (

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSocket } from '../hooks/useSocket';
 import { useStageView } from '../hooks/useStageView';
-import { ConnectionBadge } from '../components/ConnectionBadge';
+import { DockHeader } from '../components/DockHeader';
 import type { MediaPlaylistItem } from '../types';
 
 const TYPE_LABEL: Record<string, string> = {
@@ -77,11 +77,15 @@ export default function SlidesDock() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 text-slate-100 p-2 flex flex-col gap-2">
-      <header className="flex items-center justify-between">
-        <h1 className="text-sm font-bold text-slate-300">Slides Controller</h1>
-        <ConnectionBadge connected={connected} holyricsConnected={state?.connected ?? false} />
-      </header>
+    <div className="min-h-screen bg-slate-900 text-slate-100 p-3 flex flex-col gap-3">
+      <DockHeader
+        icon="🖼️"
+        title="Slides"
+        subtitle="Playlist de mídia"
+        accent="bg-sky-600"
+        connected={connected}
+        holyricsConnected={state?.connected ?? false}
+      />
 
       <div className="bg-slate-800 rounded">
         <button

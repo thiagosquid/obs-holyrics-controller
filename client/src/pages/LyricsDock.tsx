@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSocket } from '../hooks/useSocket';
-import { ConnectionBadge } from '../components/ConnectionBadge';
+import { DockHeader } from '../components/DockHeader';
 import type { LyricsPlaylistItem } from '../types';
 
 export default function LyricsDock() {
@@ -47,10 +47,14 @@ export default function LyricsDock() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-slate-100 p-3 flex flex-col gap-3">
-      <header className="flex items-center justify-between gap-2">
-        <h1 className="text-sm font-bold text-slate-300">Lyrics Controller</h1>
-        <ConnectionBadge connected={connected} holyricsConnected={state?.connected ?? false} />
-      </header>
+      <DockHeader
+        icon="🎤"
+        title="Letras"
+        subtitle="Playlist de letras"
+        accent="bg-emerald-600"
+        connected={connected}
+        holyricsConnected={state?.connected ?? false}
+      />
 
       <div className="bg-slate-800 rounded">
         <button
